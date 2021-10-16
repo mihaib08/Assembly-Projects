@@ -1,0 +1,40 @@
+/**
+ * Mihai-Eugen Barbu [2020 - 2021]
+ * 325CA
+ */
+
+==== IOCLA - Tema_01 - printf ====
+
+---->> Se constata urmatoarele aspecte :
+
+    --> '\t', '\n' - caractere speciale
+    --> '\' vs. '\\'
+         > in secvente de tipul "a \ b" se afiseaza "a  b";
+         > in secvente de tipul "a \\ b" se afiseaza "a \ b";
+    --> "%%" --> "%"
+
+---> Se foloseste variabila de tip va_list - args - pentru procesarea argumentelor.
+
+-->> Tinand cont de aceste observatii, parcurgem in ordine fiecare caracter al string-ului *format,
+     folosind un string *conv pentru a retine secvente din rezultatul de afisat astfel :
+	
+	>> format[i] != '%'
+		~ nu este nevoie sa se proceseze un argument, astfel ca se adauga in *conv format[i];
+
+	>> format[i] == '%'
+		~ se afiseaza continutul lui *conv, daca nu este gol, i.e. lconv != 0;
+		~ se analizeaza urmatorul caracter al lui *format - format[++i] :
+			% format[i] == '%' --> se afiseaza "%" la stdout
+			% format[i] == 'c' --> se proceseaza un caracter - v_char - si se afiseaza
+			% format[i] == 's' --> se proceseaza un string - v_string - si se afiseaza
+			% format[i] == 'd' --> se proceseaza un int - v_int - si :
+				-- folosind functia myItoa() se realizeaza conversia numarului in *conv
+			% format[i] == 'u' --> se proceseaza un unsigned int - v_uint - si :
+				-- folosind functia myItoaUsigned() se realizeaza conversia numarului in *conv
+			% format[i] == 'x' --> se proceseaza numarul sub forma unsigned int - v_uint - si:
+				-- folosind functia myItoaUsigned() se realizeaza conversia numarului in hex in *conv
+	
+	>> se foloseste variabila de tip int res pentru a returna numarul de caractere afisate
+
+** PS : Se elibereaza memoria folosita de lista de parametri folosind va_end().
+

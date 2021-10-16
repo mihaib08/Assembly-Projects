@@ -1,0 +1,60 @@
+/**
+ * Mihai-Eugen Barbu [2020-2021]
+ * 325CA
+ */
+
+==== IOCLA - Tema 3 - AST ====
+
+  Am implementat cele doua functii astfel:
+
+    --> iocla_atoi(char *token) 
+             - am preluat valoarea primita ca argument in ecx,
+               dupa care : 
+                   >> am verificat daca numarul este pozitiv sau negativ
+                      prin intermediul primului caracter, retinand semnul in
+                      ebx (1/-1);
+
+                   >> am parcurs, folosind registrul dl, fiecare caracter al lui ecx,
+                      formand in eax noul numar;
+
+                   >> am adaugat semnul la eax (imul eax, ebx);
+
+                   >>>> am tinut cont de calling convention (cdecl)
+                          -- am conservat ebx la intrarea si iesirea din functie;
+
+
+    --> create_tree(char *token)
+             - am creat variabila globala constanta size - [size] == 12
+                                                                  == sizeof(struct Node);
+
+             - folosind functia calloc(), am alocat zona de memorie specifica primului nod,
+               copiind adresa de inceput a acestuia in [root];
+
+             - am preluat sirul primit ca argument in eax, verificand daca este nenul, iar apoi
+               am apelat functia get_tree_values(), unde:
+
+                   >> argumentul este dat de adresa nodului curent
+                      in care sa fie pusa o valoare in *data;
+
+                   >> folosind functia strtok(), am aflat cuvantul care trebuie pus in *data,
+                      iar prin strlen() - lungimea acestuia
+
+                                 > am stocat lungimea in ecx, dupa care am alocat, folosind malloc(),
+                                   un sir de lungime ecx
+
+                      -- am copiat cuvantul curent, prin strcpy(), dupa care am pus adresa sirului returnat
+                         in [edx], unde in edx am preluat adresa nodului, primita ca parametru
+
+                 - am verificat pentru cuvantul curent daca este:
+
+                     -> operator - am alocat, folosind calloc(), memorie pentru nodurile stang si drept ale
+                                   nodului curent, dupa care am plasat sirul (eax) pe urmatorul cuvant de
+                                   adaugat in arbore
+
+                        -- am apelat get_tree_values() mai intai pentru nodul stang, iar apoi pentru cel drept
+
+                     -> numar - nodul curent este frunza
+
+                        -- am plasat sirul de caractere (eax) pe urmatorul cuvant de adaugat, dupa care se face
+                           o revenire la stack frame-ul anterior
+

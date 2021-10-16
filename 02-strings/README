@@ -1,0 +1,58 @@
+/**
+ * Mihai-Eugen Barbu [2020 - 2021]
+ * 325CA
+ */
+
+==== IOCLA - Tema_02 - Strings ====
+
+> 1. One Time Pad (otp.asm)
+
+    Folosind registrul ebx se parcurg byte cu byte caracterele din:
+           -> *plaintext - al 
+           -> *key - ah
+    si se realizeaza xor intre ele.
+
+
+> 2. Caesar Cipher (caesar.asm)
+    
+    Cum alfabetul are 26 de litere, atunci deplasarea circulara generata de key
+    este echivalenta cu deplasarea folosind (key % 26).
+
+    Se parcurge caracter cu caracter *plaintext - esi - si se verifica daca este:
+        --> !litera - se scrie in *ciphertext acelasi caracter;
+        --> litera - se verifica ce tip de litera este (a..z / A..Z)
+                     si se deplaseaza circular cu key;
+
+
+> 3. Vigenere Cipher (vigenere.asm)
+
+    Se folosesc key_ind si plain_ind pentru parcurgerea sirurilor *key si *plaintext.
+    De fiecare data cand key_ind == key_len --> se reinitializeaza key_ind.
+
+    De asemenea, cand se ajunge la caractere care nu sunt litere, se conserva key_ind.
+
+    Pentru fiecare litera din *plaintext, se afla indexul din alfabet al literei corespunzatoare din key[key_ind]
+    si se realizeaza o deplasare circulara cu acel index.
+
+
+> 4. StrStr (my_strstr.asm)
+    
+    Se parcurge fiecare pozitie - pos - din *haystack si se verifica, parcurgand caracter cu caracter,
+    daca subsirul de lungime needle_len generat din pos coincide cu *needle 
+                                                                --> se returneaza pos in caz afirmativ.
+
+    Daca nu se gaseste nicio aparitie a lui *needle in *haystack, adica nu exista nicio pozitie valida a lui pos,
+    se afizeaza (haystack_len + 1).
+
+
+> 5. Binary to Hexadecimal (bin_to_hex.asm)
+
+    Se grupeaza bitii din *bin_sequence cate 4 pornind de la sfarsit -> nibbles
+                     --> se afla restul impartirii lui length la 4 pentru a determina daca primul
+                         nibble din *bin_sequence este "incomplet" - are mai putin de 4 biti prezenti in *bin_sequence;
+                                                                   - se parcurg primele (length % 4) caractere din *bin_sequence;
+
+     Se parcurge apoi fiecare nibble prin stocarea sa in eax (4 bytes -> 4 nibbles) dupa care se formeaza
+     numarul corespunzator reprezentarii in hexadecimal, care:
+            >> daca este cifra (0..9) se converteste la caracterul cifra aferent // '0' - 0x30
+            >> daca este un numar (10..15) se converteste in litera din hex (A..F) pe care o indica // 'A' - 0x41
